@@ -1,8 +1,8 @@
-import psycopg2
-from pgvector.psycopg2 import register_vector   
-from psycopg2.extras import execute_values                                                           
+from pgvector.psycopg2 import register_vector
+from psycopg2.extras import execute_values
 from src.domain.entities import Paper, Chunk, RetrievedChunk
 from src.domain.interfaces import PaperRepository, VectorStore
+
 
 class PostgresPaperRepository(PaperRepository):
     def __init__(self, conn):
@@ -87,7 +87,8 @@ class PostgresVectorStore(VectorStore):
     def similarity_search(
         self,
         embedding: list[float],
-        limit: int,) -> list[RetrievedChunk]:
+        limit: int,
+    ) -> list[RetrievedChunk]:
         cur = self._conn.cursor()
         cur.execute(
             """
@@ -113,4 +114,3 @@ class PostgresVectorStore(VectorStore):
             )
             for row in cur.fetchall()
         ]
-
