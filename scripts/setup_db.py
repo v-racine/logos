@@ -36,11 +36,10 @@ try:
     print("✓ chunks table created")
 
     cur.execute("""
-        CREATE INDEX IF NOT EXISTS chunks_embedding_idx
-        ON chunks
-        USING ivfflat (embedding vector_cosine_ops)
-        WITH (lists = 100);
-    """)
+          CREATE INDEX IF NOT EXISTS chunks_embedding_idx
+          ON chunks
+          USING hnsw (embedding vector_cosine_ops);
+      """)
     print("✓ vector similarity index created")
 
     conn.commit()
