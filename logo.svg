@@ -1,0 +1,82 @@
+<svg width="680" height="300" viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .wordmark { fill: #534AB7; font-family: Georgia, serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; }
+    .tagline { fill: #7F77DD; font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; }
+    .star { fill: #7F77DD; }
+    .connector { stroke: #AFA9EC; stroke-width: 0.5; }
+    .sil { fill: #534AB7; }
+    .sil-dim { fill: #7F77DD; opacity: 0.65; }
+    .sil-faint { fill: #AFA9EC; opacity: 0.4; }
+  </style>
+
+  <!-- constellation connectors -->
+  <line class="connector" x1="52" y1="172" x2="95" y2="185"/>
+  <line class="connector" x1="95" y1="185" x2="140" y2="162"/>
+  <line class="connector" x1="140" y1="162" x2="185" y2="178"/>
+  <line class="connector" x1="185" y1="178" x2="228" y2="158"/>
+  <line class="connector" x1="52" y1="172" x2="30" y2="155"/>
+  <line class="connector" x1="95" y1="185" x2="100" y2="218"/>
+  <line class="connector" x1="185" y1="178" x2="195" y2="212"/>
+  <line class="connector" x1="228" y1="158" x2="255" y2="170"/>
+
+  <!-- star nodes -->
+  <circle class="star" cx="52" cy="172" r="2"/>
+  <circle class="star" cx="95" cy="185" r="2"/>
+  <circle class="star" cx="140" cy="162" r="2"/>
+  <circle class="star" cx="185" cy="178" r="2"/>
+  <circle class="star" cx="228" cy="158" r="2"/>
+  <circle class="star" cx="30" cy="155" r="1.5"/>
+  <circle class="star" cx="100" cy="218" r="1.5"/>
+  <circle class="star" cx="195" cy="212" r="1.5"/>
+  <circle class="star" cx="255" cy="170" r="1.5"/>
+
+  <!-- Silhouette 1 — large, front-facing, leftmost -->
+  <g class="sil">
+    <ellipse cx="52" cy="96" rx="17" ry="20"/>
+    <path d="M34 114 Q30 132 32 152 L72 152 Q74 132 70 114 Z"/>
+    <rect x="36" y="150" width="32" height="22" rx="3"/>
+  </g>
+
+  <!-- Silhouette 2 — medium -->
+  <g class="sil-dim">
+    <ellipse cx="95" cy="100" rx="14" ry="16"/>
+    <path d="M81 114 Q77 130 79 148 L111 148 Q113 130 109 114 Z"/>
+    <rect x="83" y="146" width="26" height="18" rx="3"/>
+  </g>
+
+  <!-- Silhouette 3 — large, centre -->
+  <g class="sil">
+    <ellipse cx="140" cy="90" rx="18" ry="21"/>
+    <path d="M121 109 Q117 128 119 150 L161 150 Q163 128 159 109 Z"/>
+    <rect x="123" y="148" width="34" height="22" rx="3"/>
+  </g>
+
+  <!-- Silhouette 4 — medium -->
+  <g class="sil-dim">
+    <ellipse cx="185" cy="98" rx="14" ry="16"/>
+    <path d="M171 112 Q167 128 169 146 L201 146 Q203 128 199 112 Z"/>
+    <rect x="173" y="144" width="26" height="18" rx="3"/>
+  </g>
+
+  <!-- Silhouette 5 — smaller, fading right -->
+  <g class="sil-faint">
+    <ellipse cx="228" cy="104" rx="12" ry="14"/>
+    <path d="M216 116 Q213 130 215 146 L241 146 Q243 130 240 116 Z"/>
+    <rect x="218" y="144" width="22" height="16" rx="3"/>
+  </g>
+
+  <!-- Silhouette 6 — faintest, far left partial -->
+  <g class="sil-faint">
+    <ellipse cx="22" cy="110" rx="10" ry="12"/>
+    <path d="M12 120 Q9 133 11 148 L33 148 Q35 133 32 120 Z"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text class="wordmark" x="300" y="140" dominant-baseline="middle">Logos</text>
+
+  <!-- divider -->
+  <line x1="300" y1="162" x2="590" y2="162" stroke="#AFA9EC" stroke-width="0.75"/>
+
+  <!-- tagline -->
+  <text class="tagline" x="300" y="178">Philosophy of science · RAG research assistant</text>
+</svg>
