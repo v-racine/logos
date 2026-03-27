@@ -64,14 +64,18 @@ class PostgresVectorStore(VectorStore):
 
     def save_chunks(self, chunks: list[Chunk]) -> None:
         cur = self._conn.cursor()
-        for chunk in chunks:
-            cur.execute(
-                """
-                INSERT INTO chunks (paper_id, content, chunk_index, embedding)
-                VALUES (%s, %s, %s, %s)
-                """,
-                (chunk.paper_id, chunk.content, chunk.chunk_index, chunk.embedding),
-            )
+        values = [
+            (chunk.paper_id, chunk.content, chunk.chunk_index, chunk.embedding)
+            for chunk in chunks
+        ]
+        psycopg2.extras.execute_values(
+            cur,
+            """
+            INSERT INTO chunks (paper_id, content, chunk_index, embedding)
+            VALUES %s
+            """,
+            values,
+        )
         self._conn.commit()
 
     def delete_all_chunks(self) -> None:
