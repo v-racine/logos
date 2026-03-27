@@ -1,5 +1,6 @@
 import psycopg2
-from pgvector.psycopg2 import register_vector                               
+from pgvector.psycopg2 import register_vector   
+from psycopg2.extras import execute_values                                                           
 from src.domain.entities import Paper, Chunk, RetrievedChunk
 from src.domain.interfaces import PaperRepository, VectorStore
 
@@ -68,7 +69,7 @@ class PostgresVectorStore(VectorStore):
             (chunk.paper_id, chunk.content, chunk.chunk_index, chunk.embedding)
             for chunk in chunks
         ]
-        psycopg2.extras.execute_values(
+        execute_values(
             cur,
             """
             INSERT INTO chunks (paper_id, content, chunk_index, embedding)
