@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 
+
 class Paper(BaseModel):
     id: Optional[int] = None
     title: str
@@ -9,6 +10,7 @@ class Paper(BaseModel):
     source_url: str
     content: str
     ingested_at: Optional[datetime] = None
+
 
 class Chunk(BaseModel):
     id: Optional[int] = None
@@ -18,6 +20,7 @@ class Chunk(BaseModel):
     embedding: Optional[list[float]] = None
     created_at: Optional[datetime] = None
 
+
 class RetrievedChunk(BaseModel):
     chunk_id: int
     paper_id: int
@@ -26,6 +29,7 @@ class RetrievedChunk(BaseModel):
     similarity_score: float
     paper_title: str
     source_url: str
+
 
 class QueryResult(BaseModel):
     answer: str
