@@ -95,7 +95,7 @@ logos/
 │
 ├── src/
 │   ├── domain/
-│   │   ├── entities.py             # Paper, Chunk, QueryResult dataclasses
+│   │   ├── entities.py           # Paper, Chunk, QueryResult dataclasses
 │   │   └── interfaces.py         # abstract base classes (EmbeddingClient, LLMClient, etc.)
 │   │
 │   ├── services/

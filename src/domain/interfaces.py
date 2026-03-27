@@ -19,24 +19,34 @@ class PDFParser(ABC):
     @abstractmethod
     def extract_text(self, pdf_path: str) -> str:
         pass
-    
-class VectorStore(ABC):
+
+class PaperRepository(ABC):
     @abstractmethod
     def save_paper(self, paper: Paper) -> int:
         pass
 
     @abstractmethod
+    def get_paper(self, paper_id: int) -> Paper:
+        pass
+
+    @abstractmethod
+    def get_all_papers(self) -> list[Paper]:
+        pass
+
+
+class VectorStore(ABC):
+    @abstractmethod
     def save_chunks(self, chunks: list[Chunk]) -> None:
+        pass
+
+    @abstractmethod
+    def delete_all_chunks(self) -> None:
         pass
 
     @abstractmethod
     def similarity_search(
         self,
         embedding: list[float],
-        limit: int
+        limit: int,
     ) -> list[RetrievedChunk]:
-        pass
-
-    @abstractmethod
-    def get_all_papers(self) -> list[Paper]:
         pass
