@@ -11,6 +11,9 @@ class IndexingService:
         chunk_size: int = 512,
         chunk_overlap: int = 100,
     ):
+        if chunk_overlap >= chunk_size:
+            raise ValueError("chunk_overlap must be less than chunk_size")
+
         self._paper_repo = paper_repo
         self._embedding_client = embedding_client
         self._vector_store = vector_store
