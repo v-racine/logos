@@ -94,10 +94,10 @@ class PostgresVectorStore(VectorStore):
             """
             SELECT c.id, c.paper_id, c.content,
             c.chunk_index,
-            1 - (c.embedding <=> %s) AS similarity_score, p.title, p.source_url
+            1 - (c.embedding <=> %s::vector) AS similarity_score, p.title, p.source_url
             FROM chunks c
             JOIN papers p ON c.paper_id = p.id
-            ORDER BY c.embedding <=> %s
+            ORDER BY c.embedding <=> %s::vector
             LIMIT %s
             """,
             (embedding, embedding, limit),
