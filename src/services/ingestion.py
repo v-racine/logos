@@ -2,6 +2,7 @@ from src.domain.entities import Paper
 from src.domain.interfaces import PDFParser, PaperRepository
 
 
+# The main write path: PDF → text → source store
 class IngestionService:
     def __init__(self, parser: PDFParser, paper_repo: PaperRepository):
         self._parser = parser
