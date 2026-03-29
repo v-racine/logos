@@ -34,4 +34,7 @@ for chunk in result.retrieved_chunks:
     print(f"\n[{chunk.paper_title}] (score:{chunk.similarity_score:.3f})")
     print(f"{chunk.content[:200]}...")
 
+print("\n--- Full Prompt ---")
+print(result.full_prompt)
+
 conn.close()

@@ -34,3 +34,4 @@ class RetrievedChunk(BaseModel):
 class QueryResult(BaseModel):
     answer: str
     retrieved_chunks: list[RetrievedChunk]
+    full_prompt: str
