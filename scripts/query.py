@@ -3,7 +3,7 @@ import sys
 import psycopg2
 from dotenv import load_dotenv
 
-from src.infrastructure.db import PostgresPaperRepository, PostgresVectorStore
+from src.infrastructure.db import PostgresVectorStore
 from src.infrastructure.embedding import OpenAIEmbeddingClient
 from src.infrastructure.llm import OpenAILLMClient
 from src.services.query import QueryService
@@ -11,7 +11,6 @@ from src.services.query import QueryService
 load_dotenv()
 
 conn = psycopg2.connect(os.getenv("DATABASE_URL"))
-paper_repo = PostgresPaperRepository(conn)
 vector_store = PostgresVectorStore(conn)
 embedding_client = OpenAIEmbeddingClient(api_key=os.getenv("OPENAI_API_KEY"))
 llm_client = OpenAILLMClient(api_key=os.getenv("OPENAI_API_KEY"))
