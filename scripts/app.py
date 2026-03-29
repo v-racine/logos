@@ -8,19 +8,34 @@ from src.infrastructure.llm import OpenAILLMClient
 from src.services.query import QueryService
 from src.handlers.gradio_ui import GradioApp
 
-load_dotenv()
 
-conn = psycopg2.connect(os.getenv("DATABASE_URL"))
-vector_store = PostgresVectorStore(conn)
+def main():
+    """Initializes and launches the Gradio application."""
+    load_dotenv()
 
-embedding_client = OpenAIEmbeddingClient(api_key=os.getenv("OPENAI_API_KEY"))
-llm_client = OpenAILLMClient(api_key=os.getenv("OPENAI_API_KEY"))
+    database_url = os.getenv("DATABASE_URL")
+    if not database_url:
+        raise ValueError("DATABASE_URL environment variable is not set.")
 
-query_service = QueryService(
-    embedding_client=embedding_client,
-    vector_store=vector_store,
-    llm_client=llm_client,
-)
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    if not openai_api_key:
+        raise ValueError("OPENAI_API_KEY environment variable is not set.")
 
-app = GradioApp(query_service=query_service)
-app.build().launch()
+    conn = psycopg2.connect(database_url)
+    vector_store = PostgresVectorStore(conn)
+
+    embedding_client = OpenAIEmbeddingClient(api_key=openai_api_key)
+    llm_client = OpenAILLMClient(api_key=openai_api_key)
+
+    query_service = QueryService(
+        embedding_client=embedding_client,
+        vector_store=vector_store,
+        llm_client=llm_client,
+    )
+
+    app = GradioApp(query_service=query_service)
+    app.build().launch()
+
+
+if __name__ == "__main__":
+    main()

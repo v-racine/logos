@@ -9,12 +9,11 @@ class GradioApp:
     def _handle_query(self, question: str) -> tuple[str, str, str]:
         result = self._query_service.query(question)
 
-        chunks_md = ""
-        for chunk in result.retrieved_chunks:
-            chunks_md += (
-                f"**{chunk.paper_title}** (score: {chunk.similarity_score:.3f})\n\n"
-            )
-            chunks_md += f"{chunk.content[:300]}...\n\n---\n\n"
+        chunks_md = "".join(
+            f"**{chunk.paper_title}** (score: {chunk.similarity_score:.3f})\n\n"
+            f"{chunk.content[:300]}...\n\n---\n\n"
+            for chunk in result.retrieved_chunks
+        )
 
         prompt_md = f"```\n{result.full_prompt}\n```"
 
