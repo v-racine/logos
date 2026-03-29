@@ -16,7 +16,7 @@ try:
             id          SERIAL PRIMARY KEY,
             title       TEXT NOT NULL,
             authors     TEXT,
-            source_url  TEXT NOT NULL,
+            source_url  TEXT NOT NULL UNIQUE,
             content     TEXT NOT NULL,
             ingested_at TIMESTAMPTZ DEFAULT NOW()
         );
