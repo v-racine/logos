@@ -28,29 +28,16 @@ class PostgresPaperRepository(PaperRepository):
 
     def get_paper(self, paper_id: int) -> Paper:
         cur = self._conn.cursor()
-        cur.execute(
-            "SELECT id, title, authors, source_url, content, ingested_at FROM papers WHERE id = %s",
-            (paper_id,),
-        )
-        row = cur.fetchone()
-        if row is None:
-            raise ValueError(f"Paper with id {paper_id} not found")
-        return Paper(
-            id=row[0],
-            title=row[1],
-            authors=row[2],
-            source_url=row[3],
-            content=row[4],
-            ingested_at=row[5],
-        )
 
-    def get_all_papers(self) -> list[Paper]:
-        cur = self._conn.cursor()
-        cur.execute(
-            "SELECT id, title, authors, source_url, content, ingested_at FROM papers ORDER BY id"
-        )
-        return [
-            Paper(
+        try:
+            cur.execute(
+                "SELECT id, title, authors, source_url, content, ingested_at FROM papers WHERE id = %s",
+                (paper_id,),
+            )
+            row = cur.fetchone()
+            if row is None:
+                raise ValueError(f"Paper with id {paper_id} not found")
+            return Paper(
                 id=row[0],
                 title=row[1],
                 authors=row[2],
@@ -58,8 +45,29 @@ class PostgresPaperRepository(PaperRepository):
                 content=row[4],
                 ingested_at=row[5],
             )
-            for row in cur.fetchall()
-        ]
+        finally:
+            cur.close()
+
+    def get_all_papers(self) -> list[Paper]:
+        cur = self._conn.cursor()
+
+        try:
+            cur.execute(
+                "SELECT id, title, authors, source_url, content, ingested_at FROM papers ORDER BY id"
+            )
+            return [
+                Paper(
+                    id=row[0],
+                    title=row[1],
+                    authors=row[2],
+                    source_url=row[3],
+                    content=row[4],
+                    ingested_at=row[5],
+                )
+                for row in cur.fetchall()
+            ]
+        finally:
+            cur.close()
 
 
 class PostgresVectorStore(VectorStore):
@@ -102,27 +110,31 @@ class PostgresVectorStore(VectorStore):
         limit: int,
     ) -> list[RetrievedChunk]:
         cur = self._conn.cursor()
-        cur.execute(
-            """
-            SELECT c.id, c.paper_id, c.content,
-            c.chunk_index,
-            1 - (c.embedding <=> %s::vector) AS similarity_score, p.title, p.source_url
-            FROM chunks c
-            JOIN papers p ON c.paper_id = p.id
-            ORDER BY c.embedding <=> %s::vector
-            LIMIT %s
-            """,
-            (embedding, embedding, limit),
-        )
-        return [
-            RetrievedChunk(
-                chunk_id=row[0],
-                paper_id=row[1],
-                content=row[2],
-                chunk_index=row[3],
-                similarity_score=row[4],
-                paper_title=row[5],
-                source_url=row[6],
+
+        try:
+            cur.execute(
+                """
+                SELECT c.id, c.paper_id, c.content,
+                c.chunk_index,
+                1 - (c.embedding <=> %s::vector) AS similarity_score, p.title, p.source_url
+                FROM chunks c
+                JOIN papers p ON c.paper_id = p.id
+                ORDER BY c.embedding <=> %s::vector
+                LIMIT %s
+                """,
+                (embedding, embedding, limit),
             )
-            for row in cur.fetchall()
-        ]
+            return [
+                RetrievedChunk(
+                    chunk_id=row[0],
+                    paper_id=row[1],
+                    content=row[2],
+                    chunk_index=row[3],
+                    similarity_score=row[4],
+                    paper_title=row[5],
+                    source_url=row[6],
+                )
+                for row in cur.fetchall()
+            ]
+        finally:
+            cur.close()
