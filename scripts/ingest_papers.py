@@ -1,14 +1,13 @@
-import os
 import psycopg2
-from dotenv import load_dotenv
+from src.config import Config
 
 from src.infrastructure.db import PostgresPaperRepository
 from src.infrastructure.pdf_parser import PyMuPDFParser
 from src.services.ingestion import IngestionService
 
-load_dotenv()
+config = Config.from_env()
 
-conn = psycopg2.connect(os.getenv("DATABASE_URL"))
+conn = psycopg2.connect(config.database_url)
 paper_repo = PostgresPaperRepository(conn)
 parser = PyMuPDFParser()
 

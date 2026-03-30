@@ -1,10 +1,10 @@
-from dotenv import load_dotenv
-import os
+from src.config import Config
+
 from src.infrastructure.embedding import OpenAIEmbeddingClient
 
-load_dotenv()
+config = Config.from_env()
 
-client = OpenAIEmbeddingClient(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAIEmbeddingClient(config.openai_api_key)
 
 embedding = client.embed("What is epistemic opacity?")
 print(f"Dimensions: {len(embedding)}")

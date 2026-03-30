@@ -1,19 +1,19 @@
-import os
 import sys
 import psycopg2
-from dotenv import load_dotenv
+from src.config import Config
+
 
 from src.infrastructure.db import PostgresVectorStore
 from src.infrastructure.embedding import OpenAIEmbeddingClient
 from src.infrastructure.llm import OpenAILLMClient
 from src.services.query import QueryService
 
-load_dotenv()
+config = Config.from_env()
+conn = psycopg2.connect(config.database_url)
 
-conn = psycopg2.connect(os.getenv("DATABASE_URL"))
 vector_store = PostgresVectorStore(conn)
-embedding_client = OpenAIEmbeddingClient(api_key=os.getenv("OPENAI_API_KEY"))
-llm_client = OpenAILLMClient(api_key=os.getenv("OPENAI_API_KEY"))
+embedding_client = OpenAIEmbeddingClient(config.openai_api_key)
+llm_client = OpenAILLMClient(config.openai_api_key)
 
 # Read path (question → search/retrieval → answer)
 query_service = QueryService(

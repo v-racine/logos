@@ -1,7 +1,6 @@
-import os
 import psycopg2
-from dotenv import load_dotenv
 
+from src.config import Config
 from src.infrastructure.db import PostgresVectorStore
 from src.infrastructure.embedding import OpenAIEmbeddingClient
 from src.infrastructure.llm import OpenAILLMClient
@@ -11,21 +10,13 @@ from src.handlers.gradio_ui import GradioApp
 
 def main():
     """Initializes and launches the Gradio application."""
-    load_dotenv()
+    config = Config.from_env()
 
-    database_url = os.getenv("DATABASE_URL")
-    if not database_url:
-        raise ValueError("DATABASE_URL environment variable is not set.")
-
-    openai_api_key = os.getenv("OPENAI_API_KEY")
-    if not openai_api_key:
-        raise ValueError("OPENAI_API_KEY environment variable is not set.")
-
-    conn = psycopg2.connect(database_url)
+    conn = psycopg2.connect(config.database_url)
     vector_store = PostgresVectorStore(conn)
 
-    embedding_client = OpenAIEmbeddingClient(api_key=openai_api_key)
-    llm_client = OpenAILLMClient(api_key=openai_api_key)
+    embedding_client = OpenAIEmbeddingClient(config.openai_api_key)
+    llm_client = OpenAILLMClient(config.openai_api_key)
 
     query_service = QueryService(
         embedding_client=embedding_client,
