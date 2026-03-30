@@ -7,7 +7,14 @@ class GradioApp:
         self._query_service = query_service
 
     def _handle_query(self, question: str) -> tuple[str, str, str]:
-        result = self._query_service.query(question)
+        if not question.strip():
+            return "Please enter a question.", "", ""
+
+        try:
+            result = self._query_service.query(question)
+        except Exception as e:
+            # temporary message for local development
+            return f"Something went wrong: {e}", "", ""
 
         chunks_md = "".join(
             f"**{chunk.paper_title}** (score: {chunk.similarity_score:.3f})\n\n"
