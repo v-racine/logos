@@ -12,20 +12,19 @@ class PostgresPaperRepository(PaperRepository):
         cur = self._conn.cursor()
 
         try:
-            cur.execute(
-                """
-                INSERT INTO papers (title, authors, source_url, content)
-                VALUES (%s, %s, %s, %s)
-                RETURNING id
-                """,
-                (paper.title, paper.authors, paper.source_url, paper.content),
-            )
-            paper_id = cur.fetchone()[0]
-            self._conn.commit()
-            return paper_id
-        except Exception:
-            self._conn.rollback()
-            raise
+            with self._conn:
+                cur.execute(
+                    """
+                    INSERT INTO papers (title, authors, source_url, content)
+                    VALUES (%s, %s, %s, %s)
+                    RETURNING id
+                    """,
+                    (paper.title, paper.authors, paper.source_url, paper.content),
+                )
+                paper_id = cur.fetchone()[0]
+                return paper_id
+        finally:
+            cur.close()
 
     def get_paper(self, paper_id: int) -> Paper:
         cur = self._conn.cursor()
@@ -76,28 +75,26 @@ class PostgresVectorStore(VectorStore):
                 (chunk.paper_id, chunk.content, chunk.chunk_index, chunk.embedding)
                 for chunk in chunks
             ]
-            execute_values(
-                cur,
-                """
-                INSERT INTO chunks (paper_id, content, chunk_index, embedding)
-                VALUES %s
-                """,
-                values,
-            )
-            self._conn.commit()
-        except Exception:
-            self._conn.rollback()
-            raise
+            with self._conn:
+                execute_values(
+                    cur,
+                    """
+                    INSERT INTO chunks (paper_id, content, chunk_index, embedding)
+                    VALUES %s
+                    """,
+                    values,
+                )
+        finally:
+            cur.close()
 
     def delete_all_chunks(self) -> None:
         cur = self._conn.cursor()
 
         try:
-            cur.execute("DELETE FROM chunks")
-            self._conn.commit()
-        except Exception:
-            self._conn.rollback()
-            raise
+            with self._conn:
+                cur.execute("DELETE FROM chunks")
+        finally:
+            cur.close()
 
     def similarity_search(
         self,
