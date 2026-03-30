@@ -15,8 +15,8 @@ def main():
     conn = psycopg2.connect(config.database_url)
     vector_store = PostgresVectorStore(conn)
 
-    embedding_client = OpenAIEmbeddingClient(config.openai_api_key)
-    llm_client = OpenAILLMClient(config.openai_api_key)
+    embedding_client = OpenAIEmbeddingClient(api_key=config.openai_api_key)
+    llm_client = OpenAILLMClient(api_key=config.openai_api_key)
 
     query_service = QueryService(
         embedding_client=embedding_client,
