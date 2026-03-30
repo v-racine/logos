@@ -13,6 +13,7 @@ class GradioApp:
         try:
             result = self._query_service.query(question)
         except Exception as e:
+            # temporary message for local development
             return f"Something went wrong: {e}", "", ""
 
         chunks_md = "".join(
