@@ -22,13 +22,13 @@ papers = [
         "source_url": "https://philsci-archive.pitt.edu/21085/",
     },
     {
-        "pdf_path": "data/papers/Koskinen(2024).pdf",
+        "pdf_path": "data/papers/Koskinen(2024a).pdf",
         "title": "We Have No Satisfactory Social Epistemology of AI-Based Science",
         "authors": "Inkeri Koskinen",
         "source_url": "https://philsci-archive.pitt.edu/22780/",
     },
     {
-        "pdf_path": "data/papers/Peters(2024).pdf",
+        "pdf_path": "data/papers/Peters(2024a).pdf",
         "title": "Science Based on Artificial Intelligence Need Not Pose a Social Epistemological Problem",
         "authors": "Uwe Peters",
         "source_url": "https://social-epistemology.com/wp-content/uploads/2024/01/peters_reply_koskinen_serrc_1-26-2024.pdf",
@@ -37,10 +37,10 @@ papers = [
         "pdf_path": "data/papers/Koskinen(2024b).pdf",
         "title": "We Still Have No Satisfactory Social Epistemology of AI-Based Science: A Response to Peters",
         "authors": "Inkeri Koskinen",
-        "source_url": "https://wp.me/p1Bfg0-8LL",
+        "source_url": "https://social-epistemology.com/2024/05/10/we-still-have-no-satisfactory-social-epistemology-of-ai-based-science-a-response-to-peters-inkeri-koskinen/",
     },
     {
-        "pdf_path": "data/papers/Peters(2024b)-Living-with-Uncertainty.pdf",
+        "pdf_path": "data/papers/Peters(2024b).pdf",
         "title": "Living with Uncertainty: Full Transparency of AI isn't Needed for Epistemic Trust in AI-based Science",
         "authors": "Uwe Peters",
         "source_url": "https://philarchive.org/archive/PETLWU",
@@ -52,9 +52,9 @@ papers = [
         "source_url": "https://doi.org/10.1007/s11229-025-04930-x",
     },
     {
-        "pdf_path": "data/papers/Andrews(2025)-Theory-Free-Ideal.pdf",
+        "pdf_path": "data/papers/Andrews(2025).pdf",
         "title": "The Immortal Science of ML: Machine Learning & the Theory-Free Ideal",
-        "authors": "Med Andrews",
+        "authors": "Mel Andrews",
         "source_url": "https://philsci-archive.pitt.edu/26075/",
     },
     {
@@ -64,9 +64,9 @@ papers = [
         "source_url": "https://philsci-archive.pitt.edu/26659/",
     },
     {
-        "pdf_path": "data/papers/Grote-Genin-Sullivan(2024)-Reliability.pdf",
+        "pdf_path": "data/papers/Grote-Genin-Sullivan(2024).pdf",
         "title": "Reliability in Machine Learning",
-        "authors": "Thomas Grote, Konstantine Genin, Emily Sullivan",
+        "authors": "Thomas Grote, Konstantin Genin, Emily Sullivan",
         "source_url": "https://doi.org/10.1111/phc3.12974",
     },
     {
