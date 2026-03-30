@@ -1,10 +1,9 @@
 import psycopg2
-from dotenv import load_dotenv
-import os
+from src.config import Config
 
-load_dotenv()
+config = Config.from_env()
 
-conn = psycopg2.connect(os.getenv("DATABASE_URL"))
+conn = psycopg2.connect(config.database_url)
 cur = conn.cursor()
 
 try:

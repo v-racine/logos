@@ -1,17 +1,17 @@
-import os
 import psycopg2
-from dotenv import load_dotenv
+from src.config import Config
+
 
 from src.infrastructure.db import PostgresPaperRepository, PostgresVectorStore
 from src.infrastructure.embedding import OpenAIEmbeddingClient
 from src.services.indexing import IndexingService
 
-load_dotenv()
+config = Config.from_env()
 
-conn = psycopg2.connect(os.getenv("DATABASE_URL"))
+conn = psycopg2.connect(config.database_url)
 paper_repo = PostgresPaperRepository(conn)
 vector_store = PostgresVectorStore(conn)
-embedding_client = OpenAIEmbeddingClient(api_key=os.getenv("OPENAI_API_KEY"))
+embedding_client = OpenAIEmbeddingClient(api_key=config.openai_api_key)
 
 # Derive path (source store → chunk → embed → vector index)
 indexing = IndexingService(
