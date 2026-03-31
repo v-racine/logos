@@ -17,6 +17,7 @@ try:
             authors     TEXT,
             source_url  TEXT NOT NULL UNIQUE,
             content     TEXT NOT NULL,
+            publication_year INTEGER,
             ingested_at TIMESTAMPTZ DEFAULT NOW()
         );
     """)

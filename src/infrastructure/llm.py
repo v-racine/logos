@@ -50,5 +50,7 @@ class OpenAILLMClient(LLMClient):
     def _build_context(self, chunks: list[RetrievedChunk]) -> str:
         sections = []
         for chunk in chunks:
-            sections.append(f"[Source: {chunk.paper_title}]\n{chunk.content}")
+            year = f" ({chunk.publication_year})" if chunk.publication_year else ""
+            header = f"[Source: {chunk.paper_title}{year}]"
+            sections.append(f"{header}\n{chunk.content}")
         return "\n\n***\n\n".join(sections)
