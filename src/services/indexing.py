@@ -1,3 +1,5 @@
+from nltk.tokenize import sent_tokenize
+
 from src.domain.entities import Chunk
 from src.domain.interfaces import PaperRepository, EmbeddingClient, VectorStore
 
@@ -8,7 +10,7 @@ class IndexingService:
         paper_repo: PaperRepository,
         embedding_client: EmbeddingClient,
         vector_store: VectorStore,
-        chunk_size: int = 512,
+        chunk_size: int = 1024,
         chunk_overlap: int = 100,
     ):
         if chunk_overlap >= chunk_size:
@@ -58,11 +60,37 @@ class IndexingService:
         return self.index_all()
 
     def _chunk_text(self, text: str) -> list[str]:
-        chunks = []
-        start = 0
+        sentences = sent_tokenize(text)
 
-        while start < len(text):
-            end = start + self._chunk_size
-            chunks.append(text[start:end])
-            start = end - self._chunk_overlap
+        chunks = []
+        current_sentences = []
+        current_length = 0
+
+        for sentence in sentences:
+            sentence_len = len(sentence)
+
+            if (
+                current_length + sentence_len + 1 > self._chunk_size
+                and current_sentences
+            ):
+                chunks.append(" ".join(current_sentences))
+
+                # Build overlap from tail of current_sentences
+                overlap_sentences = []
+                overlap_len = 0
+                for s in reversed(current_sentences):
+                    if overlap_len + len(s) + 1 > self._chunk_overlap:
+                        break
+                    overlap_sentences.insert(0, s)
+                    overlap_len += len(s) + 1
+
+                current_sentences = overlap_sentences
+                current_length = sum(len(s) + 1 for s in current_sentences)
+
+            current_sentences.append(sentence)
+            current_length += sentence_len + 1
+
+        if current_sentences:
+            chunks.append(" ".join(current_sentences))
+
         return chunks
