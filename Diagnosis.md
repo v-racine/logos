@@ -1,6 +1,6 @@
 # RAG Failure Diagnosis
 
-This document records three structural failure modes observed in the Logos RAG system,diagnosed by querying the system deliberately and examining the full prompt, retrieved chunks, and generated answers.
+This document records three structural failure modes observed in the Logos RAG system, diagnosed by querying the system deliberately and examining the full prompt, retrieved chunks, and generated answers.
 
 **Initial System Configuration (2026-03-31):**
 
@@ -446,7 +446,7 @@ QUESTION: Does AI-based science pose a social epistemological problem?
    with.
 4. A reader would conclude Koskinen's case is stronger — not because it
    is, but because
-   retrieval happend to favour it. The asymetry is invisible to the user.
+   retrieval happened to favour it. The asymmetry is invisible to the user.
 
 ---
 
@@ -827,7 +827,7 @@ responded to Koskinen's critique over the last year? Does anyone use the
 example of AlphaFold to argue against her critique?
 ```
 
-#### What went wrong
+#### What went wrong:
 
 1. The system cannot reconstruct the debate timeline. The actual
    chronology is: Koskinen (2023) → Peters (2024a) → Koskinen (2024b) → Peters (2024b) → Ortmann (2025).
