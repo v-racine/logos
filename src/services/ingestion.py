@@ -1,3 +1,5 @@
+from typing import Optional
+
 from src.domain.entities import Paper
 from src.domain.interfaces import PDFParser, PaperRepository
 
@@ -14,7 +16,7 @@ class IngestionService:
         title: str,
         authors: str,
         source_url: str,
-        publication_year: int = None,
+        publication_year: Optional[int] = None,
     ) -> int:
         content = self._parser.extract_text(pdf_path)
         paper = Paper(
