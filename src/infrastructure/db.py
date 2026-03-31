@@ -15,11 +15,17 @@ class PostgresPaperRepository(PaperRepository):
             with self._conn:
                 cur.execute(
                     """
-                    INSERT INTO papers (title, authors, source_url, content)
-                    VALUES (%s, %s, %s, %s)
+                    INSERT INTO papers (title, authors, source_url, content, publication_year)
+                    VALUES (%s, %s, %s, %s, %s)
                     RETURNING id
                     """,
-                    (paper.title, paper.authors, paper.source_url, paper.content),
+                    (
+                        paper.title,
+                        paper.authors,
+                        paper.source_url,
+                        paper.content,
+                        paper.publication_year,
+                    ),
                 )
                 paper_id = cur.fetchone()[0]
                 return paper_id
@@ -31,7 +37,7 @@ class PostgresPaperRepository(PaperRepository):
 
         try:
             cur.execute(
-                "SELECT id, title, authors, source_url, content, ingested_at FROM papers WHERE id = %s",
+                "SELECT id, title, authors, source_url, content, publication_year, ingested_at FROM papers WHERE id = %s",
                 (paper_id,),
             )
             row = cur.fetchone()
@@ -43,7 +49,8 @@ class PostgresPaperRepository(PaperRepository):
                 authors=row[2],
                 source_url=row[3],
                 content=row[4],
-                ingested_at=row[5],
+                publication_year=row[5],
+                ingested_at=row[6],
             )
         finally:
             cur.close()
@@ -53,7 +60,7 @@ class PostgresPaperRepository(PaperRepository):
 
         try:
             cur.execute(
-                "SELECT id, title, authors, source_url, content, ingested_at FROM papers ORDER BY id"
+                "SELECT id, title, authors, source_url, content, publication_year, ingested_at FROM papers ORDER BY id"
             )
             return [
                 Paper(
@@ -62,7 +69,8 @@ class PostgresPaperRepository(PaperRepository):
                     authors=row[2],
                     source_url=row[3],
                     content=row[4],
-                    ingested_at=row[5],
+                    publication_year=row[5],
+                    ingested_at=row[6],
                 )
                 for row in cur.fetchall()
             ]
@@ -116,7 +124,7 @@ class PostgresVectorStore(VectorStore):
                 """
                 SELECT c.id, c.paper_id, c.content,
                 c.chunk_index,
-                1 - (c.embedding <=> %s::vector) AS similarity_score, p.title, p.source_url
+                1 - (c.embedding <=> %s::vector) AS similarity_score, p.title, p.source_url, p.publication_year
                 FROM chunks c
                 JOIN papers p ON c.paper_id = p.id
                 ORDER BY c.embedding <=> %s::vector
@@ -133,6 +141,7 @@ class PostgresVectorStore(VectorStore):
                     similarity_score=row[4],
                     paper_title=row[5],
                     source_url=row[6],
+                    publication_year=row[7],
                 )
                 for row in cur.fetchall()
             ]

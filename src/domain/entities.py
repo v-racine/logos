@@ -9,6 +9,7 @@ class Paper(BaseModel):
     authors: Optional[str] = None
     source_url: str
     content: str
+    publication_year: Optional[int] = None
     ingested_at: Optional[datetime] = None
 
 
@@ -29,6 +30,7 @@ class RetrievedChunk(BaseModel):
     similarity_score: float
     paper_title: str
     source_url: str
+    publication_year: Optional[int] = None
 
 
 class QueryResult(BaseModel):
