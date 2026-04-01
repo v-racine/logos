@@ -49,8 +49,8 @@ class GradioApp:
                 c200="#ddd6fe",
                 c300="#c4b5fd",
                 c400="#a78bfa",
-                c500="#7F77DD",
-                c600="#534AB7",
+                c500="#7f77dd",
+                c600="#534ab7",
                 c700="#4c3daa",
                 c800="#3f3291",
                 c900="#352b78",
@@ -66,12 +66,14 @@ class GradioApp:
         with gr.Blocks(
             title="Logos",
             theme=theme,
-            css="""                            
-            .logo-header { text-align: center; margin-bottom: 8px; }
-            .logo-header img { max-width: 280px; }                                    
-        """,
         ) as app:
-            gr.Image("logo.svg", show_label=False, container=False, height=321)
+            gr.Image(
+                "logo.svg",
+                show_label=False,
+                container=False,
+                height=321,
+                interactive=False,
+            )
 
             chatbot = gr.Chatbot(
                 show_label=False,
