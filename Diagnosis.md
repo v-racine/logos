@@ -865,3 +865,5 @@ The result is a system that is most dangerous when it appears most
 confident: it returns plausible, well-cited answers that a user has no reason to doubt, but that _silently omit half a debate, truncate the core of an argument, or present a superseded claim as current_.
 
 For a research assistant aimed at philosophers — users who care precisely about the structure of arguments, the evolution of positions, and the relationship between competing views — these are not edge cases. They are the central use case, failing.
+
+---
