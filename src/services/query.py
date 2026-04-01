@@ -16,9 +16,9 @@ class QueryService:
         self._llm_client = llm_client
         self._top_k = top_k
 
-    def query(self, question: str) -> QueryResult:
+    def query(self, question: str, history: list[dict] | None = None) -> QueryResult:
         embedding = self._embedding_client.embed(question)
         chunks = self._vector_store.similarity_search(embedding, self._top_k)
 
-        result = self._llm_client.generate(question, chunks)
+        result = self._llm_client.generate(question, chunks, history=history)
         return result
