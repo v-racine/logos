@@ -41,11 +41,50 @@ class GradioApp:
 
         return chat_history, history_state, chunks_md, prompt_md
 
-    def build(self) -> gr.Blocks:
-        with gr.Blocks(title="Logos") as app:
-            gr.Markdown("# Logos\nA RAG research assistant for philosophy of science.")
+    def _build_theme(self) -> gr.themes.Soft:
+        return gr.themes.Soft(
+            primary_hue=gr.themes.Color(
+                c50="#f5f3ff",
+                c100="#ede9fe",
+                c200="#ddd6fe",
+                c300="#c4b5fd",
+                c400="#a78bfa",
+                c500="#7f77dd",
+                c600="#534ab7",
+                c700="#4c3daa",
+                c800="#3f3291",
+                c900="#352b78",
+                c950="#221b54",
+            ),
+            font=("Georgia", "serif"),
+            font_mono=("Menlo", "monospace"),
+        )
 
-            chatbot = gr.Chatbot(label="Conversation")
+    def build(self) -> gr.Blocks:
+        theme = self._build_theme()
+
+        with gr.Blocks(
+            title="Logos",
+            theme=theme,
+        ) as app:
+            gr.Image(
+                "logo.svg",
+                show_label=False,
+                container=False,
+                height=321,
+                interactive=False,
+            )
+
+            chatbot = gr.Chatbot(
+                show_label=False,
+                height=350,
+                value=[
+                    {
+                        "role": "assistant",
+                        "content": "Ask me about epistemic opacity, the use of AI in science, or any other related topic.",
+                    }
+                ],
+            )
             history_state = gr.State([])
 
             with gr.Row():
