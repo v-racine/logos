@@ -1,4 +1,5 @@
 import pytest
+from nltk.tokenize import sent_tokenize
 from src.services.indexing import IndexingService
 from src.domain.interfaces import PaperRepository, EmbeddingClient, VectorStore
 
@@ -70,7 +71,7 @@ def test_overlap_carries_tail_sentences():
     text = "Sentence one. Sentence two. Sentence three. Sentence four. Sentence five."
     chunks = service._chunk_text(text)
     if len(chunks) >= 2:
-        first_chunk_sentences = [s.strip() for s in chunks[0].split(".") if s.strip()]
+        first_chunk_sentences = sent_tokenize(chunks[0])
         last_sentence = first_chunk_sentences[-1]
         assert last_sentence in chunks[1]
 
