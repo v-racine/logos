@@ -30,7 +30,7 @@ class GradioApp:
             {"role": "user", "content": message},
             {"role": "assistant", "content": result.answer},
         ]
-        ####
+
         chunks_md = "".join(
             f"**{chunk.paper_title}** (score: {chunk.similarity_score:.3f})\n\n"
             f"{chunk.content[:300]}...\n\n---\n\n"
@@ -55,8 +55,6 @@ class GradioApp:
                     scale=4,
                 )
                 submit = gr.Button("Ask", scale=1)
-
-            ####
 
             with gr.Accordion("Retrieved Chunks", open=False):
                 chunks_display = gr.Markdown()

@@ -40,12 +40,14 @@ class OpenAILLMClient(LLMClient):
             messages=messages,
         )
 
-        full_prompt = f"[SYSTEM]\n{system_message}\n\n"
+        prompt_parts = [f"[SYSTEM]\n{system_message}"]
         if history:
-            for msg in history:
-                role_label = msg["role"].upper()
-                full_prompt += f"[{role_label}]\n{msg['content']}\n\n"
-        full_prompt += f"[USER]\n{user_message}"
+            prompt_parts.extend(
+                f"[{m['role'].upper()}]\n{m['content']}" for m in history
+            )
+
+        prompt_parts.append(f"[USER]\n{user_message}")
+        full_prompt = "\n\n".join(prompt_parts)
 
         return QueryResult(
             answer=response.choices[0].message.content,
