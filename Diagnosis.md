@@ -576,6 +576,8 @@ science?
 - Root cause: cosine similarity matches vocabulary, not conceptual
   relationships. An author who opposes a claim using different vocabulary won't be retrieved alongside the claim.
 
+---
+
 ## Failure 3: Temporal Ordering — Outdated Claims Without Supersession Signals
 
 The corpus contains a chronological debate chain: Koskinen (2023) →

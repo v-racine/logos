@@ -2,7 +2,7 @@
 
 ## Methodology
 
-To evaluate the structural limitations of the Logos RAG system, I designed and ran targeted queries against the full 21-paper corpus using the Gradio UI with full observability enabled (retrieved chunks with similarity scores, and the complete prompt sent to the LLM). Three failure modes were observed: chunking boundary splits, contradictory retrieval, and temporal ordering failure. Two queries were run per failure mode. Full query outputs, prompts, retrieved chunks, and analysis are documented in `Diagnosis.md`.
+To evaluate the structural limitations of the Logos RAG system, I designed and ran targeted queries against the full 21-paper corpus using the Gradio UI with full observability enabled (retrieved chunks with similarity scores, and the complete prompt sent to the LLM). Three failure modes were observed: chunking boundary splits, contradictory retrieval, and temporal ordering failure. Two queries were run per failure mode. Full query outputs, prompts, retrieved chunks, and analysis are documented in `DIAGNOSIS.md`.
 
 **System configuration at time of diagnosis (2026-03-31):**
 
@@ -27,7 +27,7 @@ page numbers scored 0.807, the highest of the five retrieved chunks, while the a
 argument was cut mid-word at "epistemica" right before its payoff. The LLM answered
 confidently despite receiving almost no usable content.
 
-_See Diagnosis.md, Failure 1 (Queries 1A and 1B) for full prompts and analysis._
+_See DIAGNOSIS.md, Failure 1 (Queries 1A and 1B) for full prompts and analysis._
 
 ---
 
@@ -49,7 +49,7 @@ Root cause: cosine similarity matches vocabulary, not conceptual relationships. 
 and Ortmann argue against Koskinen using different vocabulary, so they don't surface
 when Koskinen's phrasing drives the query.
 
-_See Diagnosis.md, Failure 2 (Queries 2A and 2B) for full prompts and analysis._
+_See DIAGNOSIS.md, Failure 2 (Queries 2A and 2B) for full prompts and analysis._
 
 ---
 
@@ -65,7 +65,7 @@ chunk (Peters 2024b, which explicitly states "She has now replied") scored lowes
 (0.695). Queries using temporal language ("current", "latest", "over the last year")
 produce answers anchored to whichever paper's vocabulary happened to score highest rather than the most recent paper.
 
-_See Diagnosis.md, Failure 3 (Queries 3A and 3B) for full prompts and analysis._
+_See DIAGNOSIS.md, Failure 3 (Queries 3A and 3B) for full prompts and analysis._
 
 ---
 
@@ -99,7 +99,7 @@ The simplest mitigation for Failure 3. Add a `year` field to the `papers` table 
 include it when building the context string in `llm.py`:
 
 ```python
-f"[Source: {chunk.paper_title} ({chunk.year})]\n{chunk.content}"
+f"[Source: {chunk.paper_title} ({chunk.publication_year})]\n{chunk.content}"
 ```
 
 This doesn't give the LLM the ability to reason about ordering, but it gives the user
