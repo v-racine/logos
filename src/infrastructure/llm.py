@@ -16,22 +16,38 @@ class OpenAILLMClient(LLMClient):
         self._temperature = temperature
         self._max_tokens = max_tokens
 
-    def generate(self, query: str, chunks: list[RetrievedChunk]) -> QueryResult:
+    def generate(
+        self,
+        query: str,
+        chunks: list[RetrievedChunk],
+        history: list[dict] | None = None,
+    ) -> QueryResult:
         context = self._build_context(chunks)
         system_message = self._system_prompt()
         user_message = f"CONTEXT:\n{context}\n\nQUESTION: {query}"
+
+        messages = [{"role": "system", "content": system_message}]
+
+        if history:
+            messages.extend(history)
+
+        messages.append({"role": "user", "content": user_message})
 
         response = self._client.chat.completions.create(
             model=self._model,
             temperature=self._temperature,
             max_tokens=self._max_tokens,
-            messages=[
-                {"role": "system", "content": system_message},
-                {"role": "user", "content": user_message},
-            ],
+            messages=messages,
         )
 
-        full_prompt = f"[SYSTEM]\n{system_message}\n\n[USER]\n{user_message}"
+        prompt_parts = [f"[SYSTEM]\n{system_message}"]
+        if history:
+            prompt_parts.extend(
+                f"[{m['role'].upper()}]\n{m['content']}" for m in history
+            )
+
+        prompt_parts.append(f"[USER]\n{user_message}")
+        full_prompt = "\n\n".join(prompt_parts)
 
         return QueryResult(
             answer=response.choices[0].message.content,

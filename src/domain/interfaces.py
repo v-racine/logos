@@ -14,7 +14,12 @@ class EmbeddingClient(ABC):
 
 class LLMClient(ABC):
     @abstractmethod
-    def generate(self, query: str, chunks: list[RetrievedChunk]) -> QueryResult:
+    def generate(
+        self,
+        query: str,
+        chunks: list[RetrievedChunk],
+        history: list[dict] | None = None,
+    ) -> QueryResult:
         pass
 
 
