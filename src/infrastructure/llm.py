@@ -61,7 +61,7 @@ class OpenAILLMClient(LLMClient):
             "Provide accurate, context-grounded research assistance in philosophy of science.\n"
             "# Instructions\n"
             "- Answer the user's questions using only the provided context.\n"
-            "- Cite sources by referencing the author name, paper title, and publication year.\n"
+            "- Cite sources by referencing the paper title and publication year.\n"
             "- Do NOT hallucinate.\n"
             "## Guidelines\n"
             "- Pay close attention to publication years.\n"
