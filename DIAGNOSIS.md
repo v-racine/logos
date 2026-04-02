@@ -557,7 +557,7 @@ science?
 
 #### What went wrong:
 
-1. The contradiction was erased entirely. All 5 retrieved chunks are from Koskinen — 3 from her 2023 paper and 2 from her 2024b response. Zero chunks from Peters, Ortmann, or anyone who disagrees.
+1. The contradiction was erased entirely. All 5 retrieved chunks are from Koskinen — 3 from her 2024a paper and 2 from her 2024b response. Zero chunks from Peters, Ortmann, or anyone who disagrees.
 2. Peters argues directly that we can. His paper is literally titled
    "Science Based on Artificial Intelligence Need Not Pose a Social Epistemological Problem." But it didn't make the top 5. Neither did Ortmann (2025), who uses AlphaFold as a counterexample.
 3. The LLM presented one side of a debate as settled fact. "We currently
@@ -580,14 +580,14 @@ science?
 
 ## Failure 3: Temporal Ordering — Outdated Claims Without Supersession Signals
 
-The corpus contains a chronological debate chain: Koskinen (2023) →
+The corpus contains a chronological debate chain: Koskinen (2024a) →
 Peters (2024a) → Koskinen (2024b) → Peters (2024b) → Ortmann (2025). The system stores no publication date metadata in chunks and has no mechanism to prioritize newer sources or signal which claims have been superseded.
 
 ### Query 3A: "What is Koskinen's current position on social epistemology of AI?"
 
 #### Generated Answer
 
-Koskinen's current position is that we do not have a satisfactory social epistemology of AI-based science. She argues that the existing frameworks for social epistemology, which emphasize relationships of trust in collaborative science, are inadequate when applied to AI-based science due to the opaque nature of AI systems. [...] ("We Have No Satisfactory Social Epistemology of AI-Based Science," Koskinen, 2023).
+Koskinen's current position is that we do not have a satisfactory social epistemology of AI-based science. She argues that the existing frameworks for social epistemology, which emphasize relationships of trust in collaborative science, are inadequate when applied to AI-based science due to the opaque nature of AI systems. [...] ("We Have No Satisfactory Social Epistemology of AI-Based Science," Koskinen, 2024a).
 
 #### Full Prompt
 
@@ -702,15 +702,15 @@ AI?
 
 #### What went wrong:
 
-1. The LLM cited Koskinen (2023) as her "current position." But Koskinen
+1. The LLM cited Koskinen (2024a) as her "current position." But Koskinen
    published a second paper (2024b) — "We Still Have No Satisfactory Social
    Epistemology" — where she refined and defended her position against Peters' objections. The answer ignores the evolution entirely.
 2. The retrieval contains the debate timeline but can't order it. The
-   context includes fragments from across the debate chain — Koskinen (2023), Peters (2024a), Koskinen (2024b) bibliography, Ortmann (2025) bibliography, and Peters (2024b). But there is no temporal signal connecting them.
+   context includes fragments from across the debate chain — Koskinen (2024a), Peters (2024a), Koskinen (2024b) bibliography, Ortmann (2025) bibliography, and Peters (2024b). But there is no temporal signal connecting them.
 3. The most temporally relevant chunk scored lowest (0.695). Peters
-   (2024b) explicitly says "She has now replied. I think her replies don't succeed" — this is the latest exchange in the debate. But the LLM ignored it in favour of the older 2023 paper.
+   (2024b) explicitly says "She has now replied. I think her replies don't succeed" — this is the latest exchange in the debate. But the LLM ignored it in favour of the older 2024a paper.
 4. The answer a researcher would want: "Koskinen originally argued X
-   (2023). Peters objected (2024a). Koskinen maintained and refined her position in response (2024b), arguing that we still have no satisfactory social epistemology because..." — a narrative that requires temporal ordering the system cannot provide.
+   (2024a). Peters objected (2024a). Koskinen maintained and refined her position in response (2024b), arguing that we still have no satisfactory social epistemology because..." — a narrative that requires temporal ordering the system cannot provide.
 
 ---
 
@@ -832,7 +832,7 @@ example of AlphaFold to argue against her critique?
 #### What went wrong:
 
 1. The system cannot reconstruct the debate timeline. The actual
-   chronology is: Koskinen (2023) → Peters (2024a) → Koskinen (2024b) → Peters (2024b) → Ortmann (2025).
+   chronology is: Koskinen (2024a) → Peters (2024a) → Koskinen (2024b) → Peters (2024b) → Ortmann (2025).
    Fragments from all of these appear in the context, but there is no signal about ordering.
 2. "Over the last year" is unanswerable. The query requires knowing
    publication dates. The system has no date metadata in the retrieval context. Dates are buried in citation strings but not structured for temporal reasoning. The LLM punts: "There is no information provided about other individuals."

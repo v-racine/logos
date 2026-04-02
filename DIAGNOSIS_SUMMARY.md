@@ -55,12 +55,12 @@ _See DIAGNOSIS.md, Failure 2 (Queries 2A and 2B) for full prompts and analysis._
 
 ## Failure 3: Temporal Ordering — Outdated Claims Without Supersession Signals
 
-The corpus contains a five-paper debate chain (Koskinen 2023 → Peters 2024a →
+The corpus contains a five-paper debate chain (Koskinen 2024a → Peters 2024a →
 Koskinen 2024b → Peters 2024b → Ortmann 2025), but the system stores no publication
 date metadata and treats all chunks as equally current.
 
 The most striking finding: when asked for Koskinen's _current_ position, the LLM cited
-her 2023 paper, missing her 2024b refinement entirely. The most temporally relevant
+her 2024a paper, missing her 2024b refinement entirely. The most temporally relevant
 chunk (Peters 2024b, which explicitly states "She has now replied") scored lowest
 (0.695). Queries using temporal language ("current", "latest", "over the last year")
 produce answers anchored to whichever paper's vocabulary happened to score highest rather than the most recent paper.
@@ -163,7 +163,7 @@ but lexically different passages.
 **8. Citation-graph-aware retrieval**
 
 Build a citation graph from the corpus and use it to surface related papers alongside
-similarity-retrieved chunks. A paper that cites Koskinen (2023) is likely to be
+similarity-retrieved chunks. A paper that cites Koskinen (2024a) is likely to be
 relevant to queries about Koskinen's argument, regardless of cosine similarity. This
 directly addresses the invisibility of Ortmann and Peters in Failure 2 and 3 queries.
 
