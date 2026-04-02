@@ -58,6 +58,19 @@ class GradioApp:
 
         return chat_history, history_state, chunks_md, prompt_md
 
+    def _clear_conversation(self):
+        return (
+            [
+                {
+                    "role": "assistant",
+                    "content": "Ask me about epistemic opacity, the use of AI in science, or any other related topic.",
+                }
+            ],
+            [],
+            "",
+            "",
+        )
+
     def _build_theme(self) -> gr.themes.Soft:
         return gr.themes.Soft(
             primary_hue=gr.themes.Color(
@@ -112,6 +125,8 @@ class GradioApp:
                 )
                 submit = gr.Button("Ask", scale=1)
 
+            clear = gr.Button("Clear Conversation", variant="secondary")
+
             with gr.Accordion("Retrieved Chunks", open=False):
                 chunks_display = gr.Markdown()
 
@@ -129,5 +144,10 @@ class GradioApp:
                 inputs=[question, chatbot, history_state],
                 outputs=[chatbot, history_state, chunks_display, prompt_display],
             ).then(fn=lambda: "", outputs=[question])
+
+            clear.click(
+                fn=self._clear_conversation,
+                outputs=[chatbot, history_state, chunks_display, prompt_display],
+            )
 
         return app
