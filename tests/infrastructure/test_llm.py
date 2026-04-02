@@ -2,7 +2,7 @@ from src.infrastructure.llm import OpenAILLMClient
 from src.domain.entities import RetrievedChunk
 
 
-def make_chunk(title="Test Paper", content="Some content", year=None):
+def make_chunk(title="Test Paper", content="Some content", year=None, authors=None):
     return RetrievedChunk(
         chunk_id=1,
         paper_id=1,
@@ -10,6 +10,7 @@ def make_chunk(title="Test Paper", content="Some content", year=None):
         chunk_index=0,
         similarity_score=0.9,
         paper_title=title,
+        authors=authors,
         source_url="https://example.com",
         publication_year=year,
     )
@@ -22,35 +23,53 @@ def make_client():
 def test_build_context_single_chunk_with_year():
     client = make_client()
     chunks = [
-        make_chunk(title="Deep Learning Opacity", content="DLMs are opaque.", year=2025)
+        make_chunk(
+            title="Deep Learning Opacity",
+            content="DLMs are opaque.",
+            year=2023,
+            authors="Eamon Duede",
+        )
     ]
 
     result = client._build_context(chunks)
 
-    assert result == "[Source: Deep Learning Opacity (2025)]\nDLMs are opaque."
+    assert (
+        result
+        == "[Source: Eamon Duede (2023) -- Deep Learning Opacity]\nDLMs are opaque."
+    )
 
 
 def test_build_context_single_chunk_without_year():
     client = make_client()
-    chunks = [make_chunk(title="Deep Learning Opacity", content="DLMs are opaque.")]
+    chunks = [
+        make_chunk(
+            title="Deep Learning Opacity",
+            content="DLMs are opaque.",
+            authors="Eamon Duede",
+        )
+    ]
 
     result = client._build_context(chunks)
 
-    assert result == "[Source: Deep Learning Opacity]\nDLMs are opaque."
+    assert result == "[Source: Eamon Duede -- Deep Learning Opacity]\nDLMs are opaque."
 
 
 def test_build_context_multiple_chunks_joined_by_separator():
     client = make_client()
     chunks = [
-        make_chunk(title="Paper A", content="Content A.", year=2023),
-        make_chunk(title="Paper B", content="Content B.", year=2024),
+        make_chunk(
+            title="Paper A", content="Content A.", year=2023, authors="Author A"
+        ),
+        make_chunk(
+            title="Paper B", content="Content B.", year=2024, authors="Author B"
+        ),
     ]
 
     result = client._build_context(chunks)
 
     assert "\n\n***\n\n" in result
-    assert "[Source: Paper A (2023)]" in result
-    assert "[Source: Paper B (2024)]" in result
+    assert "[Source: Author A (2023) -- Paper A]" in result
+    assert "[Source: Author B (2024) -- Paper B]" in result
 
 
 def test_build_context_empty_list():
