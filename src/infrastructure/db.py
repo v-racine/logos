@@ -124,7 +124,7 @@ class PostgresVectorStore(VectorStore):
                 """
                 SELECT c.id, c.paper_id, c.content,
                 c.chunk_index,
-                1 - (c.embedding <=> %s::vector) AS similarity_score, p.title, p.source_url, p.publication_year
+                1 - (c.embedding <=> %s::vector) AS similarity_score, p.title, p.authors, p.source_url, p.publication_year
                 FROM chunks c
                 JOIN papers p ON c.paper_id = p.id
                 ORDER BY c.embedding <=> %s::vector
@@ -140,8 +140,9 @@ class PostgresVectorStore(VectorStore):
                     chunk_index=row[3],
                     similarity_score=row[4],
                     paper_title=row[5],
-                    source_url=row[6],
-                    publication_year=row[7],
+                    authors=row[6],
+                    source_url=row[7],
+                    publication_year=row[8],
                 )
                 for row in cur.fetchall()
             ]

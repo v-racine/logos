@@ -29,6 +29,7 @@ class RetrievedChunk(BaseModel):
     chunk_index: int
     similarity_score: float
     paper_title: str
+    authors: Optional[str] = None
     source_url: str
     publication_year: Optional[int] = None
 
