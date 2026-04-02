@@ -1,5 +1,5 @@
 from src.services.query import QueryService
-from src.domain.entities import RetrievedChunk, QueryResult
+from src.domain.entities import RetrievedChunk, QueryResult, LLMResponse
 from src.domain.interfaces import EmbeddingClient, VectorStore, LLMClient
 
 
@@ -58,7 +58,11 @@ class FakeLLMClient(LLMClient):
         self.last_history = history
 
         return QueryResult(
-            answer="Generated answer.",
+            llm_response=LLMResponse(
+                answer="Generated answer.",
+                citations=[],
+                caveat=None,
+            ),
             retrieved_chunks=chunks,
             full_prompt="[SYSTEM]\ntest\n\n[USER]\ntest",
         )
@@ -146,4 +150,4 @@ def test_query_returns_query_result():
     result = service.query("test")
 
     assert isinstance(result, QueryResult)
-    assert result.answer == "Generated answer."
+    assert result.llm_response.answer == "Generated answer."

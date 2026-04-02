@@ -24,11 +24,28 @@ class GradioApp:
 
             return chat_history, history_state, "", ""
 
-        chat_history = chat_history + [{"role": "assistant", "content": result.answer}]
+        llm_response = result.llm_response
+        answer = llm_response.answer
+
+        # format citations
+        if llm_response.citations:
+            citations_md = "\n".join(
+                f'- {c.authors} ({c.year}) — "{c.title}"'
+                if c.year
+                else f'- {c.authors} — "{c.title}"'
+                for c in llm_response.citations
+            )
+            answer += f"\n\n**Sources:**\n{citations_md}"
+
+        # add caveat if present
+        if llm_response.caveat:
+            answer += f"\n\n> **Note:** {llm_response.caveat}"
+
+        chat_history = chat_history + [{"role": "assistant", "content": answer}]
 
         history_state = history_state + [
             {"role": "user", "content": message},
-            {"role": "assistant", "content": result.answer},
+            {"role": "assistant", "content": llm_response.answer},
         ]
 
         chunks_md = "".join(

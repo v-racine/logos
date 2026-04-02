@@ -34,7 +34,19 @@ class RetrievedChunk(BaseModel):
     publication_year: Optional[int] = None
 
 
-class QueryResult(BaseModel):
+class Citation(BaseModel):
+    authors: str
+    title: str
+    year: Optional[int] = None
+
+
+class LLMResponse(BaseModel):
     answer: str
+    citations: list[Citation]
+    caveat: Optional[str] = None
+
+
+class QueryResult(BaseModel):
+    llm_response: LLMResponse
     retrieved_chunks: list[RetrievedChunk]
     full_prompt: str

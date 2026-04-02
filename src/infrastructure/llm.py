@@ -1,5 +1,5 @@
 from openai import OpenAI
-from src.domain.entities import RetrievedChunk, QueryResult
+from src.domain.entities import RetrievedChunk, QueryResult, LLMResponse
 from src.domain.interfaces import LLMClient
 
 
@@ -33,12 +33,20 @@ class OpenAILLMClient(LLMClient):
 
         messages.append({"role": "user", "content": user_message})
 
-        response = self._client.chat.completions.create(
+        response = self._client.beta.chat.completions.parse(
             model=self._model,
             temperature=self._temperature,
             max_tokens=self._max_tokens,
             messages=messages,
+            response_format=LLMResponse,
         )
+
+        message = response.choices[0].message
+        if message.refusal:
+            raise RuntimeError(f"Model refusal: {message.refusal}")
+        llm_response = message.parsed
+        if llm_response is None:
+            raise RuntimeError("Failed to parse model response.")
 
         prompt_parts = [f"[SYSTEM]\n{system_message}"]
         if history:
@@ -50,7 +58,7 @@ class OpenAILLMClient(LLMClient):
         full_prompt = "\n\n".join(prompt_parts)
 
         return QueryResult(
-            answer=response.choices[0].message.content,
+            llm_response=llm_response,
             retrieved_chunks=chunks,
             full_prompt=full_prompt,
         )
@@ -61,7 +69,11 @@ class OpenAILLMClient(LLMClient):
             "Provide accurate, context-grounded research assistance in philosophy of science.\n"
             "# Instructions\n"
             "- Answer the user's questions using only the provided context.\n"
-            "- Cite sources by referencing the paper title and publication year.\n"
+            "- Cite sources by referencing the author name, paper title and publication year.\n"
+            "- Only include papers in the citations field that appear in the provided context. "
+            "Do not cite papers not present in the context.\n"
+            "- If the context is incomplete, one-sided, or insufficient, explain this in the caveat field.\n"
+            "- The caveat field should be null if the context adequately addresses the question.\n"
             "- Do NOT hallucinate.\n"
             "## Guidelines\n"
             "- Pay close attention to publication years.\n"

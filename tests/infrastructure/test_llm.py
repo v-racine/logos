@@ -86,6 +86,7 @@ def test_system_prompt_contains_key_instructions():
     assert "philosophy of science" in prompt
     assert "publication year" in prompt.lower()
     assert "Do NOT hallucinate" in prompt
+    assert "caveat" in prompt
 
 
 def test_system_prompt_has_no_missing_spaces():
