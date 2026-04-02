@@ -41,7 +41,12 @@ class OpenAILLMClient(LLMClient):
             response_format=LLMResponse,
         )
 
-        llm_response = response.choices[0].message.parsed
+        message = response.choices[0].message
+        if message.refusal:
+            raise RuntimeError(f"Model refusal: {message.refusal}")
+        llm_response = message.parsed
+        if llm_response is None:
+            raise RuntimeError("Failed to parse model response.")
 
         prompt_parts = [f"[SYSTEM]\n{system_message}"]
         if history:
