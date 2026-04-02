@@ -1,5 +1,5 @@
 from src.handlers.gradio_ui import GradioApp
-from src.domain.entities import RetrievedChunk, QueryResult
+from src.domain.entities import RetrievedChunk, QueryResult, LLMResponse
 
 
 class FakeQueryService:
@@ -11,7 +11,11 @@ class FakeQueryService:
         if self._should_raise:
             raise RuntimeError("something broke")
         return QueryResult(
-            answer=self._answer,
+            llm_response=LLMResponse(
+                answer=self._answer,
+                citations=[],
+                caveat=None,
+            ),
             retrieved_chunks=[
                 RetrievedChunk(
                     chunk_id=1,
