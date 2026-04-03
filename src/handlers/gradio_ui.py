@@ -3,6 +3,8 @@ from src.services.query import QueryService
 
 
 class GradioApp:
+    _WELCOME_MESSAGE = "Ask me about epistemic opacity, the use of AI in science, or any other related topic."
+
     def __init__(self, query_service: QueryService):
         self._query_service = query_service
 
@@ -58,12 +60,12 @@ class GradioApp:
 
         return chat_history, history_state, chunks_md, prompt_md
 
-    def _clear_conversation(self):
+    def _clear_conversation(self) -> tuple[list[dict], list[dict], str, str]:
         return (
             [
                 {
                     "role": "assistant",
-                    "content": "Ask me about epistemic opacity, the use of AI in science, or any other related topic.",
+                    "content": self._WELCOME_MESSAGE,
                 }
             ],
             [],
@@ -111,7 +113,7 @@ class GradioApp:
                 value=[
                     {
                         "role": "assistant",
-                        "content": "Ask me about epistemic opacity, the use of AI in science, or any other related topic.",
+                        "content": self._WELCOME_MESSAGE,
                     }
                 ],
             )
@@ -148,6 +150,6 @@ class GradioApp:
             clear.click(
                 fn=self._clear_conversation,
                 outputs=[chatbot, history_state, chunks_display, prompt_display],
-            )
+            ).then(fn=lambda: "", outputs=[question])
 
         return app
