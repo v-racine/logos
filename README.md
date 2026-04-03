@@ -177,6 +177,22 @@ Open `http://127.0.0.1:7860` in your browser.
 
 ---
 
+## Running tests
+
+```bash
+  pytest
+```
+
+Run a specific test file:
+
+```bash
+  pytest tests/services/test_indexing.py -v
+```
+
+No external services (database or API keys) are required to run the test suite.
+
+---
+
 ## Scripts
 
 | Script        | Path                       | Description                                                |
