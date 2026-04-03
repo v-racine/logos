@@ -6,9 +6,7 @@
 
 A research assistant chatbot that lets philosophers, grad students, and other academics query recent preprints in philosophy of science and formal epistemology, grounded in papers from 2023–2026 that general-purpose AI models don't have reliable access to just yet.
 
-Built as part of the AI Engineering component of Launch School's Capstone program.
-
----
+Built as part of the AI Engineering component of Launch School's Capstone program. [[Slides]](https://docs.google.com/presentation/d/1ZJ_GFUYG0Em8pRq84fbyOBS6MkPA_kBHQ0HH3Sq1PB4/edit?slide=id.g3d44a7a36c0_0_8#slide=id.g3d44a7a36c0_0_8)
 
 ## What it does
 
