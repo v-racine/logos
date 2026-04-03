@@ -565,7 +565,7 @@ science?
 4. This is the worst outcome for a research assistant. A philosophy
    student relying on this answer would walk away with a distorted picture of the literature.
 5. Root cause: Koskinen's keyword density for this exact phrasing is
-   higher — it's her title, repeated in her abstract, introduction, and conclusion. Peters and Ortmann use different framings to make their counterarguments. Cosine similarity matched Koskinen's vocabulary, not the conceptual opposition.
+   higher. It's her title, repeated in her abstract, introduction, and conclusion. Peters and Ortmann use different framings to make their counterarguments. Cosine similarity matched Koskinen's vocabulary, not the conceptual opposition.
 
 ### Failure 2 Summary
 
@@ -703,8 +703,8 @@ AI?
 #### What went wrong:
 
 1. The LLM cited Koskinen (2024a) as her "current position." But Koskinen
-   published a second paper (2024b) — "We Still Have No Satisfactory Social
-   Epistemology" — where she refined and defended her position against Peters' objections. The answer ignores the evolution entirely.
+   published a second paper (2024b), "We Still Have No Satisfactory Social
+   Epistemology", where she refined and defended her position against Peters' objections. The answer ignores the evolution entirely.
 2. The retrieval contains the debate timeline but can't order it. The
    context includes fragments from across the debate chain — Koskinen (2024a), Peters (2024a), Koskinen (2024b) bibliography, Ortmann (2025) bibliography, and Peters (2024b). But there is no temporal signal connecting them.
 3. The most temporally relevant chunk scored lowest (0.695). Peters
@@ -837,7 +837,7 @@ example of AlphaFold to argue against her critique?
 2. "Over the last year" is unanswerable. The query requires knowing
    publication dates. The system has no date metadata in the retrieval context. Dates are buried in citation strings but not structured for temporal reasoning. The LLM punts: "There is no information provided about other individuals."
 3. Ortmann is invisible as a respondent. Three of five chunks are from
-   Ortmann's paper. The LLM correctly identifies the AlphaFold argument but never identifies Ortmann as someone who responded to Koskinen — because the chunks don't explicitly say "Ortmann responds to Koskinen." Inferring that a paper engaging with someone's argument is a response requires citation-graph reasoning the system cannot perform.
+   Ortmann's paper. The LLM correctly identifies the AlphaFold argument but never identifies Ortmann as someone who responded to Koskinen because the chunks don't explicitly say "Ortmann responds to Koskinen." Inferring that a paper engaging with someone's argument is a response requires citation-graph reasoning the system cannot perform.
 4. Peters responded twice but only one response is reported. Peters
    (2024a) and Peters (2024b) are separate papers. The LLM only reports one. Koskinen's counter-response (2024b) is also missing from the narrative.
 
@@ -855,14 +855,9 @@ example of AlphaFold to argue against her critique?
 
 ## Conclusion
 
-The three failure modes documented here are not independent — they  
-compound each other. _Chunking boundaries_ (Failure 1) produce fragments that lack argumentative structure. _Cosine similarity retrieval_ (Failure 2) selects from those fragments based on vocabulary overlap, not conceptual relevance, which means opposing views framed in
-different language are systematically excluded. And the _absence of temporal metadata_ (Failure 3) means that even when the system retrieves fragments from across a multi-year debate, it cannot  
-distinguish an original claim from its refutation or a superseded  
-position from its update.
+The three failure modes documented here are not independent — they compound each other. _Chunking boundaries_ (Failure 1) produce fragments that lack argumentative structure. _Cosine similarity retrieval_ (Failure 2) selects from those fragments based on vocabulary overlap, not conceptual relevance, which means opposing views framed in different language are systematically excluded. And the _absence of temporal metadata_ (Failure 3) means that even when the system retrieves fragments from across a multi-year debate, it cannot distinguish an original claim from its refutation or a superseded position from its update.
 
-The result is a system that is most dangerous when it appears most  
-confident: it returns plausible, well-cited answers that a user has no reason to doubt, but that _silently omit half a debate, truncate the core of an argument, or present a superseded claim as current_.
+The result is a system that is most dangerous when it appears most confident: it returns plausible, well-cited answers that a user has no reason to doubt, but that _silently omit half a debate, truncate the core of an argument, or present a superseded claim as current_.
 
 For a research assistant aimed at philosophers — users who care precisely about the structure of arguments, the evolution of positions, and the relationship between competing views — these are not edge cases. They are the central use case, failing.
 
