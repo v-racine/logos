@@ -105,3 +105,15 @@ def test_exception_does_not_modify_history_state():
     )
 
     assert history_state == []
+
+
+def test_clear_conversation_resets_state():
+    app = GradioApp(query_service=FakeQueryService())
+
+    chat_history, history_state, chunks_md, prompt_md = app._clear_conversation()
+
+    assert len(chat_history) == 1
+    assert chat_history[0]["role"] == "assistant"
+    assert history_state == []
+    assert chunks_md == ""
+    assert prompt_md == ""

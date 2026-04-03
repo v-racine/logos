@@ -3,6 +3,8 @@ from src.services.query import QueryService
 
 
 class GradioApp:
+    _WELCOME_MESSAGE = "Ask me about epistemic opacity, the use of AI in science, or any other related topic."
+
     def __init__(self, query_service: QueryService):
         self._query_service = query_service
 
@@ -58,6 +60,19 @@ class GradioApp:
 
         return chat_history, history_state, chunks_md, prompt_md
 
+    def _clear_conversation(self) -> tuple[list[dict], list[dict], str, str]:
+        return (
+            [
+                {
+                    "role": "assistant",
+                    "content": self._WELCOME_MESSAGE,
+                }
+            ],
+            [],
+            "",
+            "",
+        )
+
     def _build_theme(self) -> gr.themes.Soft:
         return gr.themes.Soft(
             primary_hue=gr.themes.Color(
@@ -98,7 +113,7 @@ class GradioApp:
                 value=[
                     {
                         "role": "assistant",
-                        "content": "Ask me about epistemic opacity, the use of AI in science, or any other related topic.",
+                        "content": self._WELCOME_MESSAGE,
                     }
                 ],
             )
@@ -111,6 +126,8 @@ class GradioApp:
                     scale=4,
                 )
                 submit = gr.Button("Ask", scale=1)
+
+            clear = gr.Button("Clear Conversation", variant="secondary")
 
             with gr.Accordion("Retrieved Chunks", open=False):
                 chunks_display = gr.Markdown()
@@ -127,6 +144,11 @@ class GradioApp:
             question.submit(
                 fn=self._handle_query,
                 inputs=[question, chatbot, history_state],
+                outputs=[chatbot, history_state, chunks_display, prompt_display],
+            ).then(fn=lambda: "", outputs=[question])
+
+            clear.click(
+                fn=self._clear_conversation,
                 outputs=[chatbot, history_state, chunks_display, prompt_display],
             ).then(fn=lambda: "", outputs=[question])
 
