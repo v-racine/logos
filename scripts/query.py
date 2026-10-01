@@ -27,7 +27,13 @@ question = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "What is epistemic o
 result = query_service.query(question)
 
 print(f"\nQuestion: {question}")
-print(f"\nAnswer: {result.answer}")
+print(f"\nAnswer: {result.llm_response.answer}")
+if result.llm_response.caveat:
+    print(f"\nCaveat: {result.llm_response.caveat}")
+print("\n--- Citations ---")
+for citation in result.llm_response.citations:
+    year = f" ({citation.year})" if citation.year else ""
+    print(f"- {citation.authors}{year}. {citation.title}")
 print("\n--- Retrieved Chunks ---")
 for chunk in result.retrieved_chunks:
     print(f"\n[{chunk.paper_title}] (score:{chunk.similarity_score:.3f})")
